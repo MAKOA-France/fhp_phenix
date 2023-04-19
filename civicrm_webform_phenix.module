@@ -1,0 +1,25 @@
+<?php 
+
+/**
+ * Permet de griser les champs effectif et le bouton valider si le formulaire a été déjà soumis par un adhérent
+ */
+function civicrm_webform_phenix_form_alter (&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  if ($form_id == 'webform_submission_demande_effectifs_phenix_v2_add_form') {
+    $current_contact = \Drupal::request()->get('cid1');
+    $saisie_par_adherent = \Civi\Api4\Contact::get()
+        ->addSelect('custom_effectif_dsn.saisie_adherent')
+        ->addJoin('Custom_effectif_dsn AS custom_effectif_dsn', 'LEFT')
+        ->addWhere('id', '=', $current_contact)
+        ->execute()->column('custom_effectif_dsn.saisie_adherent')[0];
+
+    //si des données ont été déjà soumis
+    if ($saisie_par_adherent == 1 || $saisie_par_adherent != null) {
+        //set field effectif to readonly
+        for ($i= 1; $i<15; $i++) {
+            $form['elements']['civicrm_' . $i . '_contact_1_cg13_fieldset']['civicrm_' . $i . '_contact_1_cg13_custom_34']['#attributes']['readonly'] = true;
+        }
+            
+        $form['actions']['submit']['#disabled'] = TRUE; //set button disabled
+    }
+  }
+}
