@@ -1,0 +1,10 @@
+fhp_phenix:
+  version: 1.0
+  js:
+    asset/js/script.js: {}
+  
+  css:
+    component:
+      asset/css/style.css: {}  
+  dependencies:
+    - core/jquery
