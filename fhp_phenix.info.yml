@@ -1,0 +1,5 @@
+name: 'fhp_phenix'
+type: module
+description: 'custom module fhp phenix '
+core_version_requirement: '^8 || ^9'
+package: 'Custom'
