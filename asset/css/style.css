@@ -5,3 +5,22 @@
     padding-bottom: 12px;
     padding-left: 22px;
 }
+
+#civicrm-menu {
+    background-color: #111111 !important;
+}
+
+ul#civicrm-menu.sm li a, ul#civicrm-menu.sm  li a.highlighted:focus {
+    background-color: #111111 !important;
+    color: white !important;
+}
+
+
+#crm-container.crm-container .CRM_Activity_Form_Search .crm-accordion-wrapper {
+    margin-right: 0;
+    margin-left: 0;
+}
+
+#contactname-block #last_name, #contactDetails #last_name, #contactDetails #organization_name, #last_name, #crm-main-content-wrapper #organization_name {
+    text-transform: uppercase;
+}
