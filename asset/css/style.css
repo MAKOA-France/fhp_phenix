@@ -6,6 +6,16 @@
     padding-left: 22px;
 }
 
+/*Remplacer le logo civicrm par logo fhp*/
+#civicrm-menu-nav .crm-logo-sm {
+    background: url(https://test.sitraka.fhp.makoa.net/sites/test.sitraka.fhp.makoa.net/files/images/logo.png) no-repeat;
+    background-size: 50px;
+    padding-left: 50px;
+    margin: 0 !important;
+    width: 50px;
+    height: 14px;
+}
+
 #civicrm-menu {
     background-color: #111111 !important;
 }
