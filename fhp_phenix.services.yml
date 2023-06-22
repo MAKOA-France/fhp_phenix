@@ -1,0 +1,3 @@
+services:
+  fhp_phenix.services.view_services:
+    class: Drupal\fhp_phenix\CustomService
