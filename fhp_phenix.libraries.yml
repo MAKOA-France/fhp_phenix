@@ -1,14 +1,8 @@
 fhp_phenix:
   version: 1.0
   js:
-    # asset/js/js/data.js: {}
-    # asset/js/js/data.min.js: {}
-    # asset/js/js/intlTelInput-jquery.js: {}
-    # asset/js/js/intlTelInput.js: {}
-    # asset/js/js/intlTelInput.min.js: {}
-    # asset/js/js/utils.js: {}
     # asset/js/script.js: {}
-  
+    asset/js/script.js: {}  
   css:
     component:
       asset/css/style.css: {}  
