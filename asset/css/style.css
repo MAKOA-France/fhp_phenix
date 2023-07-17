@@ -15,6 +15,9 @@
     width: -11px;
     height: 18px;
 }
+#address_custom_11_1 .collapsible-title {
+    display: none;
+}
 
 #civicrm-menu {
     background-color: #111111 !important;
