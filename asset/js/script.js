@@ -10,7 +10,6 @@
                     // Configuration options
                     initialCountry: "mg",
                 }).setNumber("+261349856896");
-                console.log(input, ' haha')
             })
         }
     }

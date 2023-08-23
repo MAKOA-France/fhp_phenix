@@ -9,11 +9,12 @@
 /*Remplacer le logo civicrm par logo fhp*/
 #civicrm-menu-nav .crm-logo-sm {
     background: url(https://test.sitraka.fhp.makoa.net/sites/test.sitraka.fhp.makoa.net/files/images/logo.png) no-repeat;
-    background-size: 66px;
-    padding-left: 38px;
+    background-size: 105px;
+    padding-left: 60px;
     margin: 0 !important;
     width: -11px;
-    height: 18px;
+    height: 34px;
+    margin-top: 2px !important;
 }
 #address_custom_11_1 .collapsible-title {
     display: none;
