@@ -11,3 +11,8 @@ function fhp_phenix_preprocess_page(&$variables) {
 	$variables['#attached']['library'][] = 'fhp_phenix/fhp_phenix';
 }
 
+
+// Implements hook_form_alter().
+function fhp_phenix_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+	$form['#attached']['library'][] = 'fhp_phenix/fhp_phenix';
+}
