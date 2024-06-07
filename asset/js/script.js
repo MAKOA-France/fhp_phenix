@@ -12,3 +12,20 @@ if (tbodyResearchPage) {
     }
   });
 }
+
+(function($) {
+  $(document).ready(function() {
+// Define the regex pattern to match the URL
+var pattern = /^\/user\/\d+\/edit$/;
+      
+// Get the current path
+var currentPath = window.location.pathname;
+
+// Check if the current path matches the pattern
+if (pattern.test(currentPath)) {
+  jQuery('.user-logged-in.path-user #header-nav').hide();
+}
+  
+  });
+
+})(jQuery);

@@ -15,4 +15,25 @@ function fhp_phenix_preprocess_page(&$variables) {
 // Implements hook_form_alter().
 function fhp_phenix_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
 	$form['#attached']['library'][] = 'fhp_phenix/fhp_phenix';
+	
+
+	/** Permet de cacher   */
+	if ($form['#id'] == 'user-form') {
+		$form['account']['current_pass']['#wrapper_attributes']['class'][] = 'hidden';
+	}
 }
+
+function fhp_phenix_menu_local_tasks_alter(&$data, $route_name, \Drupal\Core\Cache\RefinableCacheableDependencyInterface &$cacheability) {
+    // Add a tab linking to node/add to all pages.
+	$current_path = \Drupal::service('path.current')->getPath();
+	if (matches_user_edit_url($current_path)) {
+		unset($data['tabs']);//Permet de cacher les menu de tabs (onglets au dessus du formulaire)
+	}
+}
+
+function matches_user_edit_url($url) {
+	$pattern = '/^\/user\/\d+\/edit$/';
+	return preg_match($pattern, $url);
+}
+  
+  
