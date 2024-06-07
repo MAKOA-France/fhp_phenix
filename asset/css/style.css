@@ -5,6 +5,16 @@
     padding-bottom: 12px;
     padding-left: 22px;
 }
+/*
+* Ne pas afficher le lien "precedent"
+*/
+#bottom_part .back_link {
+    display: none !important;
+}
+#middle_part .tabs.tabs--primary .tabs__tab:nth-child(2) , #block-pieddepagemakoa{
+    display: none;
+  }
+  
 
 /*Remplacer le logo civicrm par logo fhp*/
 #civicrm-menu-nav .crm-logo-sm {
