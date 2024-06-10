@@ -25,6 +25,8 @@ var currentPath = window.location.pathname;
 if (pattern.test(currentPath)) {
   jQuery('.user-logged-in.path-user #header-nav').hide();
   jQuery('.social-bar').hide();
+  jQuery('.breadcrumb__content').hide();
+
 }
   
   });
