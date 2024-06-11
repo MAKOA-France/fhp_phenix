@@ -14,21 +14,22 @@ if (tbodyResearchPage) {
 }
 
 (function($) {
-  $(document).ready(function() {
-// Define the regex pattern to match the URL
-var pattern = /^\/user\/\d+\/edit$/;
-      
-// Get the current path
-var currentPath = window.location.pathname;
+  $(document).ready(function() {console.log(' hahaha')
+    // Define the regex pattern to match the URL
+    var pattern = /^\/user\/\d+\/edit$/;
+    var pattern_reset_pass = /^\/user\/reset\/\d+$/;
+          console.log('fire, ', pattern_reset_pass)
+    // Get the current path
+    var currentPath = window.location.pathname;
 
-// Check if the current path matches the pattern
-if (pattern.test(currentPath)) {
-  jQuery('.user-logged-in.path-user #header-nav').hide();
-  jQuery('.social-bar').hide();
-  jQuery('.breadcrumb__content').hide();
+    // Check if the current path matches the pattern
+    if (pattern.test(currentPath)) {
+      jQuery('.user-logged-in.path-user #header-nav').hide();
+      jQuery('.social-bar').hide();
+      jQuery('.breadcrumb__content').hide();
 
-}
-  
+    }
+    
   });
 
 })(jQuery);

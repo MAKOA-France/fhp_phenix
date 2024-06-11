@@ -5,6 +5,9 @@
     padding-bottom: 12px;
     padding-left: 22px;
 }
+.path-user .login_link {
+    display: none !important;
+}
 /*
 * Ne pas afficher le lien "precedent"
 */

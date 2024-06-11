@@ -1,6 +1,6 @@
 <?php 
 
-
+const URL_ADHERENT = 'https://espacedoc.fhp.fr/espace_adherent_fhp/';
 /**
  * 
  * 	Ajout fichier css
@@ -19,8 +19,39 @@ function fhp_phenix_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $for
 
 	/** Permet de cacher   */
 	if ($form['#id'] == 'user-form') {
-		$form['account']['current_pass']['#wrapper_attributes']['class'][] = 'hidden';
+		$form['account']['current_pass']['#wrapper_attributes']['class'][] = 'hidden';	
 	}
+
+	//Formulaire de réinitialisation de mdp
+	if ($form['#id'] == 'user-form' && $form_state->get('user_pass_reset')) {
+		/** Redirection après soumission du formulaire de reinitialisation de mdp */
+		$form['actions']['submit']['#submit'][] = 'fhp_phenix_custom_submit_handler';
+	}
+	
+}
+
+function fhp_phenix_custom_submit_handler (&$form, \Drupal\Core\Form\FormStateInterface $form_state) {
+	/** Redirection après soumission du formulaire de reinitialisation de mdp */
+	$user_role = \Drupal::service('fhp_phenix.services.view_services')->getCurrentRole();
+
+	//si user a le role aidel avec "autheficated" role seulement
+	if (count($user_role) <3 && in_array('aidel', $user_role)) {
+		$response = new \Symfony\Component\HttpFoundation\RedirectResponse(URL_ADHERENT);
+		$response->send();
+	}
+	
+	//si user n'a pas de role aidel
+	if (count($user_role) > 0 && (
+		in_array('administrator', $user_role)
+		|| in_array('admin_client', $user_role)
+		|| in_array('cotisations', $user_role)
+		|| in_array('permanent', $user_role)
+		|| in_array('super_utilisateur', $user_role)
+
+		)) {
+		$response = new \Symfony\Component\HttpFoundation\RedirectResponse('/civicrm');
+		$response->send();
+	}	
 }
 
 function fhp_phenix_menu_local_tasks_alter(&$data, $route_name, \Drupal\Core\Cache\RefinableCacheableDependencyInterface &$cacheability) {
