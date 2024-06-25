@@ -18,7 +18,14 @@
     display: none;
   }
   
-
+  .path-frontpage #block-olivero-content {
+    margin-top: 25px;
+    display: flex;
+    justify-content: space-around;
+}
+  .path-frontpage .user-login-form .form-actions {
+    justify-content: space-around;
+  }
 /*Remplacer le logo civicrm par logo fhp*/
 #civicrm-menu-nav .crm-logo-sm {
     background: url(/files/images/logo.png) no-repeat;
@@ -51,4 +58,11 @@ ul#civicrm-menu.sm li a, ul#civicrm-menu.sm  li a.highlighted:focus {
 #contactname-block #last_name, #contactDetails #last_name, #contactDetails #organization_name, #last_name, #crm-main-content-wrapper #organization_name,
 #crm-contactinfo-content #legal_name{
     text-transform: uppercase;
+}
+
+@media (max-width: 768px) {
+    .path-frontpage .user-login-form.pwd-see {
+        width: 75%;
+        padding-left: 14px;
+    }
 }
