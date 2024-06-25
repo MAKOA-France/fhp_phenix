@@ -18,7 +18,11 @@
     display: none;
   }
   
-
+  .path-frontpage #block-olivero-content {
+    margin-top: 25px;
+    display: flex;
+    justify-content: space-around;
+}
 /*Remplacer le logo civicrm par logo fhp*/
 #civicrm-menu-nav .crm-logo-sm {
     background: url(/files/images/logo.png) no-repeat;
