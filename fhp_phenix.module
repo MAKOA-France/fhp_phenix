@@ -67,4 +67,30 @@ function matches_user_edit_url($url) {
 	return preg_match($pattern, $url);
 }
   
+
+
+function fhp_phenix_preprocess_views_view_field(&$variables) {
+  
+	$view = $variables['view'];
+	$field = $variables['field'];
+	$requests = \Drupal::request();
+
+	$row = $variables['row'];
+	// $user_roles = $current_user->getRoles(); à utiliser si besoin
+	// $email = $current_user->getEmail();à utiliser si besoin
+	if ($view->storage->id() == 'user_admin_people' &&  $view->current_display == 'page_1') {
+		if ($field->field == 'name') {
+			// dump($variables['output']);
+			$pattern = '/\/user\/(\d+)/';
+
+			$result = preg_replace_callback($pattern, function($matches) {
+				// $matches[0] contient toute la correspondance, $matches[1] contient le numéro extrait
+				return  $matches[0] . '/edit';
+			}, $variables['output']);
+
+			$rend = ['#markup' => $result];
+			$variables['output'] = \Drupal::service('renderer')->render($rend);
+		}
+	}
+}
   
