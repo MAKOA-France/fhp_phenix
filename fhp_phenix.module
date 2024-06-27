@@ -40,6 +40,13 @@ function fhp_phenix_custom_submit_handler (&$form, \Drupal\Core\Form\FormStateIn
 		$response->send();
 	}
 	
+
+	//si l'utilisateur n'a pas de role
+	// if (empty($user_role)) {
+	// 	$response = new \Symfony\Component\HttpFoundation\RedirectResponse('/');
+	// 	$response->send();
+	// }
+
 	//si user n'a pas de role aidel
 	if (count($user_role) > 0 && (
 		in_array('administrator', $user_role)

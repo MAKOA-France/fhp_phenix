@@ -59,10 +59,38 @@ ul#civicrm-menu.sm li a, ul#civicrm-menu.sm  li a.highlighted:focus {
 #crm-contactinfo-content #legal_name{
     text-transform: uppercase;
 }
+.path-frontpage #auth_box input[type="text"],.path-frontpage  #auth_box input[type="password"] {
+    width: 100%;
+}
 
 @media (max-width: 768px) {
     .path-frontpage .user-login-form.pwd-see {
         width: 75%;
         padding-left: 14px;
     }
+    .path-frontpage #auth_box {
+        /* margin-left: 61px; */
+    }
+    .path-frontpage #auth_box .tabs--primary {
+        width: 100% !important;
+    }
+    .path-frontpage .user-login-form.pwd-see {
+        width: 100%;
+        padding-left: 4px;
+        padding-right: 0;
+    }
+    .path-frontpage #block-olivero-content .block__content  {
+        width: 100%;
+    }
+    .path-frontpage nav {
+        padding-left: 0;
+        width: 100%;
+    }
+
 }
+
+/* @media (max-width: 680px) {
+       .path-frontpage .user-login-form.pwd-see {
+        padding-right: 151px;
+    }
+} */
