@@ -12,6 +12,25 @@ function fhp_phenix_preprocess_page(&$variables) {
 }
 
 
+/**
+ * Implements hook_preprocess_HOOK() for status_messages.
+ */
+function fhp_phenix_preprocess_status_messages(&$variables) {
+  // Loop through each message type and alter the message.
+  //check si c'est le site public
+	foreach ($variables['message_list'] as $type => &$messages) {
+		foreach ($messages as &$message) {
+			// Add a custom prefix to each message.
+			$is_message_reset_password = (strpos($message->__toString(), 'un compte valide, un courriel sera') !== false) ? true : false;
+			if ($is_message_reset_password) {
+				$message = ["#markup" => t("Un email sera envoyé à l'adresse indiquée avec les instructions de connexion. Pensez à vérifier vos spams
+				En cas de problème, contactez l'équipe de la FHP à l'adresse suivante : com.fhp@fhp.fr 
+				")];
+			}
+    }
+  }
+}
+
 // Implements hook_form_alter().
 function fhp_phenix_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
 	$form['#attached']['library'][] = 'fhp_phenix/fhp_phenix';
@@ -110,24 +129,3 @@ function fhp_phenix_preprocess_views_view_field(&$variables) {
 	}
 }
 
-
-/**
- * Implements hook_preprocess_HOOK() for status_messages.
- */
-function fhp_phenix_preprocess_status_messages(&$variables) {
-	// Loop through each message type and alter the message.
-	//check si c'est le site public
-	  foreach ($variables['message_list'] as $type => &$messages) {
-		  foreach ($messages as &$message) {
-			  // Add a custom prefix to each message.
-			  $is_message_reset_password = (strpos($message->__toString(), 'un compte valide, un courriel sera') !== false) ? true : false;
-			  if ($is_message_reset_password) {
-				  $message = ["#markup" => t("Un email sera envoyé à l'adresse indiquée avec les instructions de connexion. Pensez à vérifier vos spams.
-				  En cas de problème, contactez l'équipe de la FHP à l'adresse suivante : com.fhp@fhp.fr 
-				  ")];
-			  }
-	  }
-	}
-  }
-  
-  
