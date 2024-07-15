@@ -101,8 +101,6 @@ function matches_user_edit_url($url) {
 	$pattern = '/^\/user\/\d+\/edit$/';
 	return preg_match($pattern, $url);
 }
-  
-
 
 function fhp_phenix_preprocess_views_view_field(&$variables) {
   
@@ -128,4 +126,47 @@ function fhp_phenix_preprocess_views_view_field(&$variables) {
 		}
 	}
 }
-
+  
+  /**
+   * Implements hook_token_info().
+   */
+  function fhp_phenix_tokens_token_info() : array {
+    $info = [];
+    
+    $info['types']['url_fhp'] = [
+      'name' => t('URL FHP'),
+      'description' => t('Token disponible pour l\'url adhérent du site FHP'),
+    ];
+    
+    $info['tokens']['url_fhp']['espace_adherent'] = [
+      'name' => 'Current News List Title',
+      'description' => t('Latest news list title'),
+    ];
+    
+    return $info;
+  }
+  
+  /**
+   * Implements hook_tokens().
+   */
+  function fhp_phenix_tokens_tokens($type, $tokens, array $data, array $options, \Drupal\Core\Render\BubbleableMetadata $bubbleable_metadata) : array {
+    $replacements = [];
+    if ($type == 'url_fhp') {
+      foreach ($tokens as $name => $original) {
+        Civi::log()->debug('token name : ' . print_r($name,1));
+        Civi::log()->debug('token original : ' . print_r($original,1));
+        switch ($name) {
+        case 'espace_adherent':
+          $replacements[$original] = URL_ADHERENT;
+          break;
+        
+        default:
+          break;
+        }
+      }
+    }
+    //Civi::log()->debug('token replacements : ' . print_r($replacements,1));
+    
+    var_dump($type);
+    return $replacements;
+  }
