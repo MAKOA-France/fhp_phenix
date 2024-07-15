@@ -1,6 +1,6 @@
 <?php 
 
-
+const URL_ADHERENT = 'https://espacedoc.fhp.fr/espace_adherent_fhp/';
 /**
  * 
  * 	Ajout fichier css
@@ -12,6 +12,7 @@ function fhp_phenix_preprocess_page(&$variables) {
 }
 
 
+<<<<<<< HEAD
 
 /**
  * Implements hook_preprocess_HOOK() for status_messages.
@@ -32,3 +33,94 @@ function fhp_phenix_preprocess_status_messages(&$variables) {
   }
 }
 
+=======
+// Implements hook_form_alter().
+function fhp_phenix_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+	$form['#attached']['library'][] = 'fhp_phenix/fhp_phenix';
+	
+
+	/** Permet de cacher   */
+	if ($form['#id'] == 'user-form') {
+		$form['account']['current_pass']['#wrapper_attributes']['class'][] = 'hidden';	
+	}
+
+	//Formulaire de réinitialisation de mdp
+	if ($form['#id'] == 'user-form' && $form_state->get('user_pass_reset')) {
+		/** Redirection après soumission du formulaire de reinitialisation de mdp */
+		$form['actions']['submit']['#submit'][] = 'fhp_phenix_custom_submit_handler';
+	}
+	
+}
+
+function fhp_phenix_custom_submit_handler (&$form, \Drupal\Core\Form\FormStateInterface $form_state) {
+	/** Redirection après soumission du formulaire de reinitialisation de mdp */
+	$user_role = \Drupal::service('fhp_phenix.services.view_services')->getCurrentRole();
+
+	//si user a le role aidel avec "autheficated" role seulement
+	if (count($user_role) <3 && in_array('aidel', $user_role)) {
+		$response = new \Symfony\Component\HttpFoundation\RedirectResponse(URL_ADHERENT);
+		$response->send();
+	}
+	
+
+	//si l'utilisateur n'a pas de role
+	// if (empty($user_role)) {
+	// 	$response = new \Symfony\Component\HttpFoundation\RedirectResponse('/');
+	// 	$response->send();
+	// }
+
+	//si user n'a pas de role aidel
+	if (count($user_role) > 0 && (
+		in_array('administrator', $user_role)
+		|| in_array('admin_client', $user_role)
+		|| in_array('cotisations', $user_role)
+		|| in_array('permanent', $user_role)
+		|| in_array('super_utilisateur', $user_role)
+
+		)) {
+		$response = new \Symfony\Component\HttpFoundation\RedirectResponse('/civicrm');
+		$response->send();
+	}	
+}
+
+function fhp_phenix_menu_local_tasks_alter(&$data, $route_name, \Drupal\Core\Cache\RefinableCacheableDependencyInterface &$cacheability) {
+    // Add a tab linking to node/add to all pages.
+	$current_path = \Drupal::service('path.current')->getPath();
+	if (matches_user_edit_url($current_path)) {
+		unset($data['tabs']);//Permet de cacher les menu de tabs (onglets au dessus du formulaire)
+	}
+}
+
+function matches_user_edit_url($url) {
+	$pattern = '/^\/user\/\d+\/edit$/';
+	return preg_match($pattern, $url);
+}
+  
+
+
+function fhp_phenix_preprocess_views_view_field(&$variables) {
+  
+	$view = $variables['view'];
+	$field = $variables['field'];
+	$requests = \Drupal::request();
+
+	$row = $variables['row'];
+	// $user_roles = $current_user->getRoles(); à utiliser si besoin
+	// $email = $current_user->getEmail();à utiliser si besoin
+	if ($view->storage->id() == 'user_admin_people' &&  $view->current_display == 'page_1') {
+		if ($field->field == 'name') {
+			// dump($variables['output']);
+			$pattern = '/\/user\/(\d+)/';
+
+			$result = preg_replace_callback($pattern, function($matches) {
+				// $matches[0] contient toute la correspondance, $matches[1] contient le numéro extrait
+				return  $matches[0] . '/edit';
+			}, $variables['output']);
+
+			$rend = ['#markup' => $result];
+			$variables['output'] = \Drupal::service('renderer')->render($rend);
+		}
+	}
+}
+  
+>>>>>>> 39719240a36d2495f488eb24c72b1e1b9e78b1ca
