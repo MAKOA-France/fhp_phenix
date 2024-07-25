@@ -1,4 +1,5 @@
 <?php 
+use Drupal\Core\Routing\TrustedRedirectResponse;
 
 const URL_ADHERENT = 'https://espacedoc.fhp.fr/espace_adherent_fhp/';
 /**
@@ -46,8 +47,86 @@ function fhp_phenix_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $for
 		/** Redirection après soumission du formulaire de reinitialisation de mdp */
 		$form['actions']['submit']['#submit'][] = 'fhp_phenix_custom_submit_handler';
 	}
-	
+
+	if ($form_id == 'user_pass') {
+		$form['#submit'][] = 'fhp_phenix_user_pass_submit';
+	}
+ 
 }
+
+// deconnecter saml ?
+use Drupal\miniorange_saml\Utilities;
+
+function fhp_phenix_user_pass_submit(array $form, \Drupal\Core\Form\FormStateInterface $form_state) {
+  // [SV] cookie used, we need to clean it to avoid infinite redirection
+	// c.f. https://lab.symbiotic.coop/makoa/general/-/issues/571#note_177094
+	unset($_COOKIE['response_params']);
+	setcookie('response_params', '', time()-3600, '/');
+}
+
+
+// /**
+//  * Implements hook_user_login().
+//  */
+// function  fhp_phenix_user_login(\Drupal\user\UserInterface $account) {
+
+// 	/** Redirection après soumission du formulaire de reinitialisation de mdp */
+// 	$user_role = \Drupal::service('fhp_phenix.services.view_services')->getCurrentRole();
+
+// 	// Voir si lurl conteinet reset
+// 	$current_path = \Drupal::service('path.current')->getPath();
+// 	$variables['current_path'] = $current_path;
+
+
+// 	if($variables['current_path'][1] == 'reset' ){
+// 		// ON LAISSE FAIRE la normalité . on redigire pas pour que cela aille vers url (/user/Contact_id/edit?pass-reset-token=)
+// 	}else {
+// 		//si user a le role aidel avec "autheficated" role seulement
+// 		if (count($user_role) <3 && in_array('aidel', $user_role)) {
+// 			$response = new \Symfony\Component\HttpFoundation\RedirectResponse(URL_ADHERENT);
+// 			$response->send();
+// 		}
+		
+
+// 		//si l'utilisateur n'a pas de role
+// 		// if (empty($user_role)) {
+// 		// 	$response = new \Symfony\Component\HttpFoundation\RedirectResponse('/');
+// 		// 	$response->send();
+// 		// }
+
+// 		//si user n'a pas de role aidel
+// 		if (count($user_role) > 0 && (
+// 			in_array('administrator', $user_role)
+// 			|| in_array('admin_client', $user_role)
+// 			|| in_array('cotisations', $user_role)
+// 			|| in_array('permanent', $user_role)
+// 			|| in_array('super_utilisateur', $user_role)
+
+// 			)) {
+// 			$response = new \Symfony\Component\HttpFoundation\RedirectResponse('/civicrm');
+// 			$response->send();
+// 		}	
+		
+// 	}
+
+// 	// Ignore password reset.
+// 	$route_name = \Drupal::routeMatch()->getRouteName();
+// 	if ($route_name !== 'user.reset.login') {
+// 	  // Do not interfere if a destination was already set.
+// 	  $current_request = \Drupal::service('request_stack')->getCurrentRequest();
+// 	  if (!$current_request->query->get('destination')) {
+// 		// // Default login destination to the dashboard.
+// 		// $current_request->query->set(
+// 		//   'destination',
+// 		//   \Drupal\Core\Url::fromRoute('mymodule.dashboard')->toString()
+// 		// );
+
+		
+
+
+// 	  }
+// 	}
+//   }
 
 function fhp_phenix_custom_submit_handler (&$form, \Drupal\Core\Form\FormStateInterface $form_state) {
 	/** Redirection après soumission du formulaire de reinitialisation de mdp */
@@ -56,7 +135,9 @@ function fhp_phenix_custom_submit_handler (&$form, \Drupal\Core\Form\FormStateIn
 	// Voir si lurl conteinet reset
 	$current_path = \Drupal::service('path.current')->getPath();
 	$variables['current_path'] = $current_path;
-	if($variables['current_path'][1] == 'reset'){
+
+/*	
+	if($variables['current_path'][1] == 'reset' ){
 		// ON LAISSE FAIRE la normalité . on redigire pas pour que cela aille vers url (/user/Contact_id/edit?pass-reset-token=)
 	}else {
 		//si user a le role aidel avec "autheficated" role seulement
@@ -86,7 +167,7 @@ function fhp_phenix_custom_submit_handler (&$form, \Drupal\Core\Form\FormStateIn
 		}	
 		
 	}
-
+ */	
 }
 
 function fhp_phenix_menu_local_tasks_alter(&$data, $route_name, \Drupal\Core\Cache\RefinableCacheableDependencyInterface &$cacheability) {
