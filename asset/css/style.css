@@ -1,3 +1,144 @@
+/**** start asset injector ****/
+
+
+/**** Fiche contact ****/
+#address_custom_11_1 .collapsible-title {
+    display: none;
+}
+
+
+/******** form login */
+/*
+* REgle pour enlver le fond avec des gougoutte et mettre en blanc
+*/
+body{
+    background: none;
+}
+.path-frontpage #middle_part .tabs.tabs--primary .tabs__tab:nth-child(2), #block-pieddepagemakoa {
+    display: none;
+}
+.path-frontpage #bottom_part .back_link {
+    display: none !important;
+}
+
+.path-frontpage #auth_box #middle_part > h2.title {
+	display: flex;
+	justify-content: center;
+}
+
+.path-frontpage #bottom_part  {
+	margin-top: -110px;
+	
+}
+
+#the_logo a img {
+	background:#fff;
+	display:block;
+	margin:0 auto;
+}
+
+.path-frontpage #bottom_part .password_link , .path-frontpage #bottom_part  .back_link {
+	  display: flex;
+    justify-content: center;
+}
+
+.path-frontpage .region.region--highlighted.grid-full.layout--pass--content-medium {
+	  display: flex;
+    flex-direction: column;
+}
+
+.path-frontpage .region.region--content.grid-full.layout--pass--content-medium.ie11-autorow {
+	/*margin-left: -16%;*/
+	display: flex;
+}
+
+#block-pieddepagemakoa {
+    padding-top: 31px;
+    box-shadow: 0 3px 4px 0 #ccc;
+    background: white;
+    padding-bottom: 12px;
+    padding-left: 22px;
+}
+
+.path-frontpage nav.tabs-wrapper > ul.tabs.tabs--primary {
+	  /*display: flex;*/
+    justify-content: center;
+    /*margin-left: -56px;*/
+}
+
+.path-frontpage #block-olivero-primary-local-tasks {
+	margin-bottom: 0;
+}
+.path-frontpage #block-olivero-content {
+	    margin-top: 25px;
+}
+
+.path-frontpage #auth_box, .path-user #auth_box {
+    width: 35%;
+	}
+
+
+@media only screen and (max-width: 768px) {
+  /* For mobile phones: */
+  .path-frontpage #auth_box {
+    width: 100%;
+	}
+	
+	.path-frontpage .region.region--content.grid-full.layout--pass--content-medium.ie11-autorow{
+    margin-left: 0;
+	}
+	.path-frontpage #middle_part {
+		    min-height: 550px;
+	}
+	.path-frontpage #middle_part {
+		min-height: 600px;
+	}
+}
+  
+
+@media only screen and (min-device-width: 1024px) and (max-device-width: 1440px) {
+	.path-frontpage #auth_box {
+    width: 100%;
+	}
+	.path-frontpage #block-olivero-content .block__content {
+		display: flex;
+	}
+	.path-frontpage #block-olivero-content .block__content .user-login-form {
+		margin: auto;
+	}
+	.path-frontpage #the_logo img {
+		max-width: 40%;
+    margin: auto;
+	}
+}
+
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+  /* For mobile phones: */
+  .path-frontpage #auth_box {
+    width: 100%;
+	}
+/*	.path-frontpage #auth_box */
+	
+	.path-frontpage .region.region--content.grid-full.layout--pass--content-medium.ie11-autorow{
+    margin-left: 0;
+	}
+	.path-frontpage #the_logo img {
+		max-width: 40%;
+    margin: auto;
+	}
+}
+
+/********** end login page *****/
+
+
+
+/********** start style branding image *****/
+.site-branding__logo img {
+	background:#fff;
+}
+/****  end  asset injector ****/
+
+
 #block-pieddepagemakoa {
     padding-top: 31px;
     box-shadow: 0 3px 4px 0 #ccc;

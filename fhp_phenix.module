@@ -12,6 +12,10 @@ function fhp_phenix_preprocess_page(&$variables) {
 	$variables['#attached']['library'][] = 'fhp_phenix/fhp_phenix';
 }
 
+function  fhp_phenix_page_attachments(array &$attachments) {
+	  $attachments['#attached']['library'][] = 'fhp_phenix/fhp_phenix';
+  }
+  
 
 /**
  * Implements hook_preprocess_HOOK() for status_messages.

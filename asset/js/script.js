@@ -15,7 +15,12 @@ if (tbodyResearchPage) {
 
 (function($) {
   $(document).ready(function() {
-    // console.log(' hahaha')
+
+
+    jQuery('.path-frontpage #block-pieddepagemakoa').insertAfter('#bottom_part');
+console.log('checking')
+
+
     // Define the regex pattern to match the URL
     var pattern = /^\/user\/\d+\/edit$/;
     var pattern_reset_pass = /^\/user\/reset\/\d+$/;
