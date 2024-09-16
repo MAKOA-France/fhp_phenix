@@ -11,6 +11,15 @@ use Drupal\Core\Url;
  */
 class CustomService {
 
+
+    public function getCurrentRole() {
+        $current_user = \Drupal::currentUser();
+        $user = \Drupal\user\Entity\User::load($current_user->id());
+
+        // Get an array of role IDs for the current user.
+        $user_roles = $current_user->getRoles();
+        return $user_roles;
+    }
   
     
 }
