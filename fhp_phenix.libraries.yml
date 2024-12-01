@@ -1,11 +1,9 @@
 fhp_phenix:
   version: 1.0
   js:
-    # asset/js/script.js: {}
     asset/js/script.js: {}  
   css:
     component:
       asset/css/style.css: {}  
-      # asset/css/css/intlTelInput.css: {}  
   dependencies:
     - core/jquery

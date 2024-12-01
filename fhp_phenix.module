@@ -1,6 +1,7 @@
 <?php 
+use Drupal\Core\Routing\TrustedRedirectResponse;
 
-
+const URL_ADHERENT = 'https://espacedoc.fhp.fr/espace_adherent_fhp/';
 /**
  * 
  * 	Ajout fichier css
@@ -11,3 +12,246 @@ function fhp_phenix_preprocess_page(&$variables) {
 	$variables['#attached']['library'][] = 'fhp_phenix/fhp_phenix';
 }
 
+function  fhp_phenix_page_attachments(array &$attachments) {
+	  $attachments['#attached']['library'][] = 'fhp_phenix/fhp_phenix';
+  }
+  
+
+/**
+ * Implements hook_preprocess_HOOK() for status_messages.
+ */
+function fhp_phenix_preprocess_status_messages(&$variables) {
+  // Loop through each message type and alter the message.
+  //check si c'est le site public
+	foreach ($variables['message_list'] as $type => &$messages) {
+		foreach ($messages as &$message) {
+			// Add a custom prefix to each message.
+			$is_message_reset_password = (strpos($message->__toString(), 'un compte valide, un courriel sera') !== false) ? true : false;
+			if ($is_message_reset_password) {
+				$message = ["#markup" => t("Un email sera envoyé à l'adresse indiquée avec les instructions de connexion. Pensez à vérifier vos spams
+				En cas de problème, contactez l'équipe de la FHP à l'adresse suivante : com.fhp@fhp.fr 
+				")];
+			}
+    }
+  }
+}
+
+// Implements hook_form_alter().
+function fhp_phenix_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+	$form['#attached']['library'][] = 'fhp_phenix/fhp_phenix';
+	
+
+	/** Permet de cacher   */
+	if ($form['#id'] == 'user-form') {
+		$form['account']['current_pass']['#wrapper_attributes']['class'][] = 'hidden';	
+	}
+
+	//Formulaire de réinitialisation de mdp
+	if ($form['#id'] == 'user-form' && $form_state->get('user_pass_reset')) {
+		/** Redirection après soumission du formulaire de reinitialisation de mdp */
+		$form['actions']['submit']['#submit'][] = 'fhp_phenix_custom_submit_handler';
+	}
+
+	if ($form_id == 'user_pass') {
+		$form['#submit'][] = 'fhp_phenix_user_pass_submit';
+	}
+ 
+}
+
+// deconnecter saml ?
+use Drupal\miniorange_saml\Utilities;
+
+function fhp_phenix_user_pass_submit(array $form, \Drupal\Core\Form\FormStateInterface $form_state) {
+  // [SV] cookie used, we need to clean it to avoid infinite redirection
+	// c.f. https://lab.symbiotic.coop/makoa/general/-/issues/571#note_177094
+	unset($_COOKIE['response_params']);
+	setcookie('response_params', '', time()-3600, '/');
+}
+
+
+// /**
+//  * Implements hook_user_login().
+//  */
+// function  fhp_phenix_user_login(\Drupal\user\UserInterface $account) {
+
+// 	/** Redirection après soumission du formulaire de reinitialisation de mdp */
+// 	$user_role = \Drupal::service('fhp_phenix.services.view_services')->getCurrentRole();
+
+// 	// Voir si lurl conteinet reset
+// 	$current_path = \Drupal::service('path.current')->getPath();
+// 	$variables['current_path'] = $current_path;
+
+
+// 	if($variables['current_path'][1] == 'reset' ){
+// 		// ON LAISSE FAIRE la normalité . on redigire pas pour que cela aille vers url (/user/Contact_id/edit?pass-reset-token=)
+// 	}else {
+// 		//si user a le role aidel avec "autheficated" role seulement
+// 		if (count($user_role) <3 && in_array('aidel', $user_role)) {
+// 			$response = new \Symfony\Component\HttpFoundation\RedirectResponse(URL_ADHERENT);
+// 			$response->send();
+// 		}
+		
+
+// 		//si l'utilisateur n'a pas de role
+// 		// if (empty($user_role)) {
+// 		// 	$response = new \Symfony\Component\HttpFoundation\RedirectResponse('/');
+// 		// 	$response->send();
+// 		// }
+
+// 		//si user n'a pas de role aidel
+// 		if (count($user_role) > 0 && (
+// 			in_array('administrator', $user_role)
+// 			|| in_array('admin_client', $user_role)
+// 			|| in_array('cotisations', $user_role)
+// 			|| in_array('permanent', $user_role)
+// 			|| in_array('super_utilisateur', $user_role)
+
+// 			)) {
+// 			$response = new \Symfony\Component\HttpFoundation\RedirectResponse('/civicrm');
+// 			$response->send();
+// 		}	
+		
+// 	}
+
+// 	// Ignore password reset.
+// 	$route_name = \Drupal::routeMatch()->getRouteName();
+// 	if ($route_name !== 'user.reset.login') {
+// 	  // Do not interfere if a destination was already set.
+// 	  $current_request = \Drupal::service('request_stack')->getCurrentRequest();
+// 	  if (!$current_request->query->get('destination')) {
+// 		// // Default login destination to the dashboard.
+// 		// $current_request->query->set(
+// 		//   'destination',
+// 		//   \Drupal\Core\Url::fromRoute('mymodule.dashboard')->toString()
+// 		// );
+
+		
+
+
+// 	  }
+// 	}
+//   }
+
+function fhp_phenix_custom_submit_handler (&$form, \Drupal\Core\Form\FormStateInterface $form_state) {
+	/** Redirection après soumission du formulaire de reinitialisation de mdp */
+	$user_role = \Drupal::service('fhp_phenix.services.view_services')->getCurrentRole();
+
+	// Voir si lurl conteinet reset
+	$current_path = \Drupal::service('path.current')->getPath();
+	$variables['current_path'] = $current_path;
+
+/*	
+	if($variables['current_path'][1] == 'reset' ){
+		// ON LAISSE FAIRE la normalité . on redigire pas pour que cela aille vers url (/user/Contact_id/edit?pass-reset-token=)
+	}else {
+		//si user a le role aidel avec "autheficated" role seulement
+		if (count($user_role) <3 && in_array('aidel', $user_role)) {
+			$response = new \Symfony\Component\HttpFoundation\RedirectResponse(URL_ADHERENT);
+			$response->send();
+		}
+		
+	
+		//si l'utilisateur n'a pas de role
+		// if (empty($user_role)) {
+		// 	$response = new \Symfony\Component\HttpFoundation\RedirectResponse('/');
+		// 	$response->send();
+		// }
+	
+		//si user n'a pas de role aidel
+		if (count($user_role) > 0 && (
+			in_array('administrator', $user_role)
+			|| in_array('admin_client', $user_role)
+			|| in_array('cotisations', $user_role)
+			|| in_array('permanent', $user_role)
+			|| in_array('super_utilisateur', $user_role)
+	
+			)) {
+			$response = new \Symfony\Component\HttpFoundation\RedirectResponse('/civicrm');
+			$response->send();
+		}	
+		
+	}
+ */	
+}
+
+function fhp_phenix_menu_local_tasks_alter(&$data, $route_name, \Drupal\Core\Cache\RefinableCacheableDependencyInterface &$cacheability) {
+    // Add a tab linking to node/add to all pages.
+	$current_path = \Drupal::service('path.current')->getPath();
+	if (matches_user_edit_url($current_path)) {
+		unset($data['tabs']);//Permet de cacher les menu de tabs (onglets au dessus du formulaire)
+	}
+}
+
+function matches_user_edit_url($url) {
+	$pattern = '/^\/user\/\d+\/edit$/';
+	return preg_match($pattern, $url);
+}
+
+function fhp_phenix_preprocess_views_view_field(&$variables) {
+  
+	$view = $variables['view'];
+	$field = $variables['field'];
+	$requests = \Drupal::request();
+
+	$row = $variables['row'];
+	// $user_roles = $current_user->getRoles(); à utiliser si besoin
+	// $email = $current_user->getEmail();à utiliser si besoin
+	if ($view->storage->id() == 'user_admin_people' &&  $view->current_display == 'page_1') {
+		if ($field->field == 'name') {
+			// dump($variables['output']);
+			$pattern = '/\/user\/(\d+)/';
+
+			$result = preg_replace_callback($pattern, function($matches) {
+				// $matches[0] contient toute la correspondance, $matches[1] contient le numéro extrait
+				return  $matches[0] . '/edit';
+			}, $variables['output']);
+
+			$rend = ['#markup' => $result];
+			$variables['output'] = \Drupal::service('renderer')->render($rend);
+		}
+	}
+}
+  
+  /**
+   * Implements hook_token_info().
+   */
+  function fhp_phenix_tokens_token_info() : array {
+    $info = [];
+    
+    $info['types']['url_fhp'] = [
+      'name' => t('URL FHP'),
+      'description' => t('Token disponible pour l\'url adhérent du site FHP'),
+    ];
+    
+    $info['tokens']['url_fhp']['espace_adherent'] = [
+      'name' => 'Current News List Title',
+      'description' => t('Latest news list title'),
+    ];
+    
+    return $info;
+  }
+  
+  /**
+   * Implements hook_tokens().
+   */
+  function fhp_phenix_tokens_tokens($type, $tokens, array $data, array $options, \Drupal\Core\Render\BubbleableMetadata $bubbleable_metadata) : array {
+    $replacements = [];
+    if ($type == 'url_fhp') {
+      foreach ($tokens as $name => $original) {
+        Civi::log()->debug('token name : ' . print_r($name,1));
+        Civi::log()->debug('token original : ' . print_r($original,1));
+        switch ($name) {
+        case 'espace_adherent':
+          $replacements[$original] = URL_ADHERENT;
+          break;
+        
+        default:
+          break;
+        }
+      }
+    }
+    //Civi::log()->debug('token replacements : ' . print_r($replacements,1));
+    
+    var_dump($type);
+    return $replacements;
+  }
