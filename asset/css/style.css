@@ -5,7 +5,10 @@
 #address_custom_11_1 .collapsible-title {
     display: none;
 }
-
+.js .is-initial.is-password-empty.is-confirm-empty:not(.form-item--error) .password-confirm__confirm {
+    display: block !important;
+    max-height: 100% !important;
+}
 
 /******** form login */
 /*
