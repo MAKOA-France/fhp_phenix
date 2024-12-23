@@ -43,7 +43,7 @@ function fhp_phenix_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $for
 
 	/** Permet de cacher   */
 	if ($form['#id'] == 'user-form') {
-		$form['account']['current_pass']['#wrapper_attributes']['class'][] = 'hidden';	
+		$form['account']['current_pass']['#wrapper_attributes']['class'][] = 'hidden-odd';	
 	}
 
 	//Formulaire de réinitialisation de mdp
